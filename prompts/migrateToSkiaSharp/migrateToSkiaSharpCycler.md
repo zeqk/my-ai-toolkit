@@ -2,6 +2,7 @@ Run automatic refactor rounds until convergence, executing build error detection
 
 Data:
 - project: E:\NProjects\a1f.webapi\
+  Note: all relative paths below are relative to this project root.
 - targets_path: .\tools\error-files.csv
 - template_path: .\.github\prompts\migrateToSkiaSharpByFile.prompt.md
 - placeholder_file: {{target_file}}
@@ -18,6 +19,7 @@ Algorithm:
 2. While round <= max_rounds:
    a. From repository root, run:
       .\tools\build-errors.ps1 .\src\a1f.webapi\a1f.webapi.csproj
+      Note: this script overwrites targets_path automatically; do NOT delete it before running.
    b. If build-errors fails -> stop with error.
    c. If targets_path does not exist -> stop with error.
    d. Read targets_path as CSV (columns: File, Lines), clean up empty/duplicate rows by File.
@@ -35,6 +37,7 @@ Algorithm:
 Rules:
 - Stop immediately if build-errors fails.
 - Do not create sessions if build-errors fails.
+- Do not ask for authorization to run .\tools\build-errors.ps1; execute it directly.
 - Continue automatically between rounds without user intervention.
 - All necessary reads and file modifications within the project folder are allowed without requesting authorization.
 - Do not edit files outside the scope of each session.
